@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getSingleProduct } from "../Api";
-import { Product } from "../models/IProducts";
+import { get4RandomProducts, getSingleProduct } from "../Api";
+import { IProducts, Product } from "../models/IProducts";
 import Navbar from "../components/Navbar";
-import Gallery from 'react-image-gallery';
-import 'react-image-gallery/styles/css/image-gallery.css';
+import Gallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 import StarRatings from "react-star-ratings";
+import { toast } from "react-toastify";
+import ProductItem from "../components/ProductItem";
 
 function Detail() {
   const [item, setItem] = useState<Product>();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [images, setImages] = useState<any[]>();
 
   useEffect(() => {
     const idNum = Number(id);
@@ -19,54 +22,122 @@ function Detail() {
       navigate("/");
     } else {
       //servis ziyaretinde bulun
+      toast(" Yükleniyor!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       getSingleProduct(idNum)
         .then((res) => {
           //işlem başarılı, datalar geldi.
           const dt = res.data;
           setItem(dt);
-          console.log(dt);
+          // console.log(dt);
+          const arr = [];
+          for (let i = 0; i < dt.images.length; i++) {
+            const item = dt.images[i];
+            const image = {
+              original: item,
+              thumbnail: item,
+            };
+            arr.push(image);
+          }
+          setImages(arr);
+          toast.dismiss();
         })
         .catch((err) => {
           //işlem başarısız
-          alert("Servis Hatası Oluştu");
-        });
+          toast.dismiss();
+          toast.error("Servis Hatası");
+        })
+        .finally(() => {});
     }
+  }, []);
+  const [proObj, setProObj] = useState<IProducts>();
+  useEffect(() => {
+    const skip = Math.floor(Math.random() * 96);
+    get4RandomProducts(4, skip).then((res) => {
+      const dt = res.data;
+      setProObj(dt);
+    });
   }, []);
 
   return (
     <>
-      <Navbar />
+      <div className="mb-3">
+        {" "}
+        <Navbar />
+      </div>
+
       <div className="row">
         {item && (
           <>
             <div className="mb-2 col-sx-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-              <h4 >    {item.title}</h4>
-              <h5> Kategori: {item.category}</h5>
-              <h5> Stok adedi: {item.stock}</h5>
-              <h5> Marka: {item.brand}</h5>
-              <h5> Fiyat: {item.price}$</h5>
-              <StarRatings starRatedColor="gold" starEmptyColor="gray" starDimension="25" rating={item.rating}/>
+              <h2>{item.title}</h2>
+              <div className="card">
+                <div className="card-body">{item.description}</div>
+              </div>
+              <span
+                className="badge text-bg-success fs-6 p-2 mb-2 mt-2"
+                style={{ marginRight: "1rem" }}
+              >
+                {item.price}$
+              </span>
+              <span
+                className="badge text-bg-light fs-6 p-2 "
+                style={{ marginRight: "1rem" }}
+              >
+                -%{item.discountPercentage}
+              </span>
+              <span
+                className="badge text-bg-light fs-6 p-2 "
+                style={{ marginRight: "1rem" }}
+              >
+                Stok: {item.stock}
+              </span>
+
+              <span className="float-end mb-2 mt-2">
+                <StarRatings
+                  starRatedColor="gold"
+                  starEmptyColor="gray"
+                  starDimension="25"
+                  rating={item.rating}
+                />
+              </span>
+
+              <div className="btn btn-outline-primary ">Sepete Ekle</div>
             </div>
             <div className="mb-2 col-sx-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-       
-             <Gallery
-                 items={item.images.map((image) => ({
-                  original: image,
-                  thumbnail: image,
-                  originalHeight: 300,
-                  originalWidth:300,
-                  
-                }))}
-                showFullscreenButton={true}
-                showPlayButton={true}
-                showNav={true}
-                
-             
-             ></Gallery>
-         </div>
-             
+              {images && (
+                <Gallery
+                  items={item.images.map((image) => ({
+                    original: image,
+                    thumbnail: image,
+                  }))}
+                  showFullscreenButton={true}
+                  showPlayButton={true}
+                  showNav={true}
+                  autoPlay={true}
+                  useBrowserFullscreen={false}
+                ></Gallery>
+              )}
+            </div>
           </>
         )}
+      </div>
+
+      <h3>Sizin için Seçtiklerimiz</h3>
+      <hr></hr>
+      <div className="row mt-2">
+        {proObj &&
+          proObj.products.map((item, index) => (
+            <ProductItem item={item} index={index} key={index} />
+          ))}
       </div>
     </>
   );

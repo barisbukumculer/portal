@@ -3,6 +3,8 @@ import { getAllProducts } from "../Api";
 import { IProducts } from "../models/IProducts";
 import ProductItem from "../components/ProductItem";
 import Navbar from "../components/Navbar";
+import SliderImages from "../components/ImageSlider";
+import { relative } from "path";
 
 function Home() {
   const [proObj, setProObj] = useState<IProducts>();
@@ -23,7 +25,10 @@ function Home() {
   return (
     <>
     <Navbar/>
-    <div className="row"  >
+   <div className="slider-container" style={{position:'relative'}} >
+    <SliderImages/>
+    </div>   
+    <div className="row mt-2"  >
       {proObj &&
         proObj.products.map((item, index) => (
          <ProductItem item={item} index={index} key={index}/>
