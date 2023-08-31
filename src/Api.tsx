@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IProducts, Product } from "./models/IProducts";
+import { UserModel } from "./models/UserModel";
 
 const baseURL = "https://dummyjson.com/";
 const config = axios.create({
@@ -35,4 +36,13 @@ export const getAllCategories = () => {
 //Single Category in Products
 export const singleCategoryProducts=(categoryname:string)=>{
 return config.get<IProducts>('products/category/'+categoryname)
+}
+
+//User Login
+export const login=(username:string, password:string)=>{
+  const sentObj={
+    username:username,
+    password: password
+  }
+  return config.post<UserModel>('auth/login', sentObj)
 }
