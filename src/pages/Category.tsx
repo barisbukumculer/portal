@@ -5,6 +5,7 @@ import { firstUpper } from '../util'
 import { singleCategoryProducts } from '../Api'
 import { IProducts } from '../models/IProducts'
 import ProductItem from '../components/ProductItem'
+import Header from '../components/Header'
 
 function Category() {
     const [proObj, setProObj] = useState<IProducts>();
@@ -25,7 +26,7 @@ function Category() {
     
   return (
    <>
-   <Navbar/>
+   <Header/>
    <h2>{firstUpper(categoryname!)}</h2>
    <div className="row mt-2"  >
       {proObj &&

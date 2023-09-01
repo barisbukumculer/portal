@@ -5,6 +5,7 @@ import ProductItem from "../components/ProductItem";
 import Navbar from "../components/Navbar";
 import SliderImages from "../components/ImageSlider";
 import { relative } from "path";
+import Header from "../components/Header";
 
 function Home() {
   const [proObj, setProObj] = useState<IProducts>();
@@ -24,7 +25,7 @@ function Home() {
 
   return (
     <>
-    <Navbar/>
+    <Header/>
    <div className="slider-container" style={{position:'relative'}} >
     <SliderImages/>
     </div>   

@@ -4,6 +4,7 @@ import login_img from "../assets/login.jpg";
 import { login } from "../Api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { encrypt } from "../util";
 
 function Login() {
     const navigate =useNavigate()
@@ -15,7 +16,10 @@ function Login() {
       .then((res) => {
         const dt = res.data;
         if (dt) {
-          navigate("/")
+          var stData=JSON.stringify(dt)
+          stData=encrypt(stData)
+          localStorage.setItem("customer",stData)
+         window.location.href='/'
         }
       })
       .catch((err) => {

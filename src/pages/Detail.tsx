@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { get4RandomProducts, getSingleProduct } from "../Api";
+import { addCart, get4RandomProducts, getSingleProduct } from "../Api";
 import { IProducts, Product } from "../models/IProducts";
 import Navbar from "../components/Navbar";
 import Gallery from "react-image-gallery";
@@ -8,6 +8,8 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import StarRatings from "react-star-ratings";
 import { toast } from "react-toastify";
 import ProductItem from "../components/ProductItem";
+import Header from "../components/Header";
+import { getCustomer } from "../util";
 
 function Detail() {
   const [item, setItem] = useState<Product>();
@@ -67,11 +69,27 @@ function Detail() {
     });
   }, []);
 
+const addBasket=()=>{
+  const customer=getCustomer()
+  if(customer===null){
+    navigate("/login")
+  }else{
+    addCart(customer!.id,item!.id).then(res=>{
+      const dt=res.data
+      if(dt){
+        toast.success("Add Basket Success")
+      }
+    }).catch(err=>{
+      toast.error("Add Basket Fail")
+    })
+  }
+}
+
   return (
     <>
       <div className="mb-3">
         {" "}
-        <Navbar />
+        <Header />
       </div>
 
       <div className="row">
@@ -100,7 +118,12 @@ function Detail() {
               >
                 Stok: {item.stock}
               </span>
-
+              <span
+                className="badge text-bg-light fs-6 p-2 "
+                style={{ marginRight: "1rem" }}
+              >
+              {item.category}
+              </span>
               <span className="float-end mb-2 mt-2">
                 <StarRatings
                   starRatedColor="gold"
@@ -109,9 +132,11 @@ function Detail() {
                   rating={item.rating}
                 />
               </span>
-
-              <div className="btn btn-outline-primary ">Sepete Ekle</div>
+           <div>
+           <button onClick={addBasket} className="btn btn-primary"><i className="bi bi-cart-plus"></i> Add Basket</button>
+           </div>
             </div>
+           
             <div className="mb-2 col-sx-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
               {images && (
                 <Gallery

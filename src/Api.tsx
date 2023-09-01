@@ -1,6 +1,7 @@
 import axios from "axios";
 import { IProducts, Product } from "./models/IProducts";
 import { UserModel } from "./models/UserModel";
+import { CartModel } from "./models/CartModel";
 
 const baseURL = "https://dummyjson.com/";
 const config = axios.create({
@@ -45,4 +46,18 @@ export const login=(username:string, password:string)=>{
     password: password
   }
   return config.post<UserModel>('auth/login', sentObj)
+}
+
+//Add Cart
+export const addCart = ( userId: number, id: number ) => {
+  const sendObj = {
+      userId: userId,
+      products: [
+        {
+          id: id,
+          quantity: 1,
+        }
+      ]
+  }
+  return config.post<CartModel>('carts/add', sendObj)
 }

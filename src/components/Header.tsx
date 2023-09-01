@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { getAllCategories } from "../Api";
-import { firstUpper } from "../util";
+import { firstUpper, getCustomer } from "../util";
+import { UserModel } from "../models/UserModel";
 
-function Navbar() {
+function Header() {
+  const [customer, setCustomer] = useState<UserModel>()
+  useEffect(() => {
+    const customer=getCustomer()
+    if(customer!==null){
+      setCustomer(customer)
+    }
+  }, [])
+  const logout=()=>{
+    localStorage.removeItem('customer')
+  }
+  
   const [categories, setCategories] = useState<string[]>([]);
   useEffect(() => {
     getAllCategories()
@@ -39,7 +51,32 @@ function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-     
+          <div className="dropdown">
+              <button
+                className="btn btn-dark dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Kategoriler
+              </button>
+              <ul className="dropdown-menu bg-dark">
+                {categories.map((item, index) => (
+                  <li key={index}>
+                    <NavLink
+                      reloadDocument={true}
+                      className="dropdown-item text-light custom-button"
+                      to={`/Category/${item}`}
+                    >
+                      {firstUpper(item)}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+      {!customer && 
+      <>
             <li className="nav-item">
               <a className="nav-link" href="/login">
                 Login
@@ -47,9 +84,26 @@ function Navbar() {
             </li>
             <li className="nav-item">
               <a className="nav-link disabled" aria-disabled="true">
-                Disabled
+                
               </a>
             </li>
+            </>
+            }
+      {customer && 
+      <>
+            <li className="nav-item">
+              <a onClick={logout} className="nav-link" href="/login" >
+               Logout
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link disabled" aria-disabled="true">
+                {customer?.firstName + " " +customer?.lastName}
+              </a>
+            </li>
+            </>
+            }
+            
           </div>
         </div>
       </div>
@@ -57,4 +111,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Header;
