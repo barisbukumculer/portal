@@ -29,4 +29,18 @@
   .custom-button:hover {
     background-color: #0056b3; 
     color: black; 
-  } 
+  }
+   .table-hover>tbody>tr.customRow:hover>* {
+
+    --bs-table-color-state: none;
+
+    --bs-table-bg-state: none;
+
+}
+
+tr.noBorder{
+    border-style: hidden;
+}
+th.noBorder{
+    border-style: hidden;
+}

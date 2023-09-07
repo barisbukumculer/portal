@@ -25,19 +25,18 @@ function Home() {
 
   return (
     <>
-    <Header/>
-   <div className="slider-container" style={{position:'relative'}} >
-    <SliderImages/>
-    </div>   
-    <div className="row mt-2"  >
-      {proObj &&
-        proObj.products.map((item, index) => (
-         <ProductItem item={item} index={index} key={index}/>
-        ))}
-        </div>
+      <Header />
+      <div className="slider-container" style={{ position: "relative" }}>
+        <SliderImages />
+      </div>
+      <div className="row mt-2">
+        {proObj &&
+          proObj.products.map((item, index) => (
+            <ProductItem item={item}  key={index} />
+          ))}
+      </div>
     </>
   );
 }
 
 export default Home;
-

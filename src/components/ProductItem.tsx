@@ -2,7 +2,7 @@ import React from 'react'
 import { Product } from '../models/IProducts'
 import { useNavigate } from 'react-router-dom'
 
-function ProductItem( props: {item:Product, index:number } ) {
+function ProductItem( props: {item:Product } ) {
 
   const navigate=useNavigate()
   const gotoURL=(id:number)=>{

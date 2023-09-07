@@ -161,7 +161,7 @@ const addBasket=()=>{
       <div className="row mt-2">
         {proObj &&
           proObj.products.map((item, index) => (
-            <ProductItem item={item} index={index} key={index} />
+            <ProductItem item={item} key={index} />
           ))}
       </div>
     </>

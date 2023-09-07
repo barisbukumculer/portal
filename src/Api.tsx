@@ -2,6 +2,7 @@ import axios from "axios";
 import { IProducts, Product } from "./models/IProducts";
 import { UserModel } from "./models/UserModel";
 import { CartModel } from "./models/CartModel";
+import { UserCartModel } from "./models/UserCartModel";
 
 const baseURL = "https://dummyjson.com/";
 const config = axios.create({
@@ -15,7 +16,6 @@ export const getAllProducts = () => {
 };
 
 //Single Product
-
 export const getSingleProduct = (id: number) => {
   return config.get<Product>("products/" + id);
 };
@@ -60,4 +60,19 @@ export const addCart = ( userId: number, id: number ) => {
       ]
   }
   return config.post<CartModel>('carts/add', sendObj)
+}
+
+// Get User Cart
+export const userCart=(id:number)=>{
+  return config.get<UserCartModel>('carts/user/'+id)
+}
+
+//Search Product
+export const searchProduct=(q:string,limitCount:number,skip:number)=>{
+  const sendObj={
+    q: q,
+    limit:limitCount,
+    skip:limitCount*skip
+  }
+  return config.get<IProducts>("/products/search",{params:sendObj})
 }
