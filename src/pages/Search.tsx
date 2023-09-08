@@ -5,6 +5,8 @@ import { searchProduct } from "../Api";
 import { IProducts } from "../models/IProducts";
 import ProductItem from "../components/ProductItem";
 import load from "../assets/load.gif";
+import Footer from "../components/Footer";
+import { Helmet } from "react-helmet";
 
 function Search() {
   const { q } = useParams();
@@ -46,6 +48,10 @@ function Search() {
   };
   return (
     <>
+     <Helmet>
+    <meta charSet="utf-8"name="description" content={"Search "+ q}  />
+    <title>Search: {q}</title>
+  </Helmet>
       <Header />
       <h2>Search Results: {q}</h2>
     {isLoad===true &&
@@ -83,6 +89,7 @@ function Search() {
         </ul>
       </nav>
       </div>
+      
     </>
   );
 }

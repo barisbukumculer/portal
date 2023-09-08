@@ -6,6 +6,8 @@ import { singleCategoryProducts } from '../Api'
 import { IProducts } from '../models/IProducts'
 import ProductItem from '../components/ProductItem'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
+import { Helmet } from 'react-helmet'
 
 function Category() {
     const [proObj, setProObj] = useState<IProducts>();
@@ -26,6 +28,10 @@ function Category() {
     
   return (
    <>
+  <Helmet>
+        <meta charSet="utf-8"name="description" content={firstUpper(categoryname!)+ 'Categories'}  />
+        <title>{firstUpper(categoryname!)}</title>
+      </Helmet>
    <Header/>
    <h2>{firstUpper(categoryname!)}</h2>
    <div className="row mt-2"  >

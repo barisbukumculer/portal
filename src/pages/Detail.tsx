@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import ProductItem from "../components/ProductItem";
 import Header from "../components/Header";
 import { getCustomer } from "../util";
+import Footer from "../components/Footer";
+import { Helmet } from "react-helmet";
 
 function Detail() {
   const [item, setItem] = useState<Product>();
@@ -69,21 +71,23 @@ function Detail() {
     });
   }, []);
 
-const addBasket=()=>{
-  const customer=getCustomer()
-  if(customer===null){
-    navigate("/login")
-  }else{
-    addCart(customer!.id,item!.id).then(res=>{
-      const dt=res.data
-      if(dt){
-        toast.success("Add Basket Success")
-      }
-    }).catch(err=>{
-      toast.error("Add Basket Fail")
-    })
-  }
-}
+  const addBasket = () => {
+    const customer = getCustomer();
+    if (customer === null) {
+      navigate("/login");
+    } else {
+      addCart(customer!.id, item!.id)
+        .then((res) => {
+          const dt = res.data;
+          if (dt) {
+            toast.success("Add Basket Success");
+          }
+        })
+        .catch((err) => {
+          toast.error("Add Basket Fail");
+        });
+    }
+  };
 
   return (
     <>
@@ -91,7 +95,10 @@ const addBasket=()=>{
         {" "}
         <Header />
       </div>
-
+      <Helmet>
+        <meta charSet="utf-8"name="description" content={item?.description} />
+        <title>{item?.title}</title>
+      </Helmet>
       <div className="row">
         {item && (
           <>
@@ -122,7 +129,7 @@ const addBasket=()=>{
                 className="badge text-bg-light fs-6 p-2 "
                 style={{ marginRight: "1rem" }}
               >
-              {item.category}
+                {item.category}
               </span>
               <span className="float-end mb-2 mt-2">
                 <StarRatings
@@ -132,11 +139,13 @@ const addBasket=()=>{
                   rating={item.rating}
                 />
               </span>
-           <div>
-           <button onClick={addBasket} className="btn btn-primary"><i className="bi bi-cart-plus"></i> Add Basket</button>
-           </div>
+              <div>
+                <button onClick={addBasket} className="btn btn-primary">
+                  <i className="bi bi-cart-plus"></i> Add Basket
+                </button>
+              </div>
             </div>
-           
+
             <div className="mb-2 col-sx-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
               {images && (
                 <Gallery

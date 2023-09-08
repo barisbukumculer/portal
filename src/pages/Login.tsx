@@ -5,6 +5,8 @@ import { login } from "../Api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { encrypt } from "../util";
+import Footer from "../components/Footer";
+import { Helmet } from "react-helmet";
 
 function Login() {
     const navigate =useNavigate()
@@ -28,6 +30,10 @@ function Login() {
   };
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Portal Login</title>
+      </Helmet>
       <Header />
       <div className="row">
         <div className="col-sm-6">

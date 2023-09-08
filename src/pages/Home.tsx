@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import SliderImages from "../components/ImageSlider";
 import { relative } from "path";
 import Header from "../components/Header";
+import { Helmet } from "react-helmet";
 
 function Home() {
   const [proObj, setProObj] = useState<IProducts>();
@@ -25,6 +26,10 @@ function Home() {
 
   return (
     <>
+      <Helmet>
+        <meta name="description" content="Portal E-Commerce Site" charSet="utf-8" />
+        <title>Portal E-Commerce</title>
+      </Helmet>
       <Header />
       <div className="slider-container" style={{ position: "relative" }}>
         <SliderImages />
@@ -32,7 +37,7 @@ function Home() {
       <div className="row mt-2">
         {proObj &&
           proObj.products.map((item, index) => (
-            <ProductItem item={item}  key={index} />
+            <ProductItem item={item} key={index} />
           ))}
       </div>
     </>

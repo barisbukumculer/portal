@@ -4,6 +4,8 @@ import { getCustomer } from "../util";
 import { useNavigate } from "react-router-dom";
 import { userCart } from "../Api";
 import { UserCartModel } from "../models/UserCartModel";
+import Footer from "../components/Footer";
+import { Helmet } from "react-helmet";
 
 function Cart() {
   const navigate = useNavigate();
@@ -31,7 +33,11 @@ function Cart() {
   };
 
   return (
-    <>
+    <> 
+    <Helmet>
+    <meta charSet="utf-8"name="description" content={"E-Commerce Carts"}  />
+    <title>E-Commerce Carts</title>
+  </Helmet>
       <Header />
       {cartInfo && (
         <>
