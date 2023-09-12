@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addCart, get4RandomProducts, getSingleProduct } from "../Api";
 import { IProducts, Product } from "../models/IProducts";
@@ -12,12 +12,14 @@ import Header from "../components/Header";
 import { getCustomer } from "../util";
 import Footer from "../components/Footer";
 import { Helmet } from "react-helmet";
+import { Animate } from "react-simple-animate";
 
 function Detail() {
   const [item, setItem] = useState<Product>();
   const { id } = useParams();
   const navigate = useNavigate();
   const [images, setImages] = useState<any[]>();
+  const [isload, setIsload] = useState(false)
 
   useEffect(() => {
     const idNum = Number(id);
@@ -53,11 +55,16 @@ function Detail() {
           }
           setImages(arr);
           toast.dismiss();
+          setTimeout(()=>{
+            setIsload(true)
+          },300);
+          
         })
         .catch((err) => {
           //işlem başarısız
           toast.dismiss();
           toast.error("Servis Hatası");
+          setIsload(false)
         })
         .finally(() => {});
     }
@@ -96,14 +103,29 @@ function Detail() {
         <Header />
       </div>
       <Helmet>
-        <meta charSet="utf-8"name="description" content={item?.description} />
+        <meta charSet="utf-8" name="description" content={item?.description} />
         <title>{item?.title}</title>
       </Helmet>
       <div className="row">
         {item && (
           <>
             <div className="mb-2 col-sx-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-              <h2>{item.title}</h2>
+              <Animate
+                play={isload}
+                start={{
+                  transform: "translateX(40px)",
+                  opacity: 0,
+                  filter: "blur(5px)",
+                }}
+                end={{
+                  transform: "translateX(0px)",
+                  opacity: 1,
+                  filter: "blur(0px)",
+                }}
+              >
+                <h2>{item.title}</h2>
+              </Animate>
+
               <div className="card">
                 <div className="card-body">{item.description}</div>
               </div>

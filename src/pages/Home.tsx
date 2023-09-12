@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAllProducts } from "../Api";
 import { IProducts } from "../models/IProducts";
 import ProductItem from "../components/ProductItem";
-import Navbar from "../components/Navbar";
 import SliderImages from "../components/ImageSlider";
-import { relative } from "path";
 import Header from "../components/Header";
 import { Helmet } from "react-helmet";
 
